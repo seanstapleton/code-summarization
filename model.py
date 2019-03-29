@@ -1,10 +1,9 @@
-import torch.nn as nn
+from torch import nn, optim
 
 class Encoder(nn.Module):
-    def __init__(self, input_size, embedding_size, hidden_size):
+    def __init__(self, input_size=100, embedding_size=50, hidden_size=50):
         super(Encoder, self).__init__()
         self.hidden_size = hidden_size
-
         self.embedding = nn.Embedding(input_size, embedding_size)
         # Can also try lstm
         self.gru = nn.GRU(input_size=embedding_size, hidden_size=hidden_size)
@@ -15,8 +14,8 @@ class Encoder(nn.Module):
 
         return output, hidden
 
-def Decoder(nn.Module):
-    def __init__(self, hidden_size, input_size, max_length ):
+class Decoder(nn.Module):
+    def __init__(self, hidden_size=50, input_size=50, max_length=300 ):
         super(Decoder, self).__init__()
         self.hidden_size = hidden_size
         self.input_size = input_size
@@ -45,9 +44,31 @@ def Decoder(nn.Module):
         output = nn.log_softmax(self.out(output[0]), dim=1)
         return output, hidden, attn_weights
 
+def train(input, target, encoder, decoder, encoder_optimizer, decoder_optimizer, loss_function, hidden_size):
+    # zero out gradients
+    encoder_optimizer.zero_grad()
+    decoder_optimizer.zero_grad()
+
+    encoder_outputs = torch.zeros(input.size(1), hidden_size)
+
+    # For each timestep
+    for t in range(input.size(0)):
+        encoder_out, encoder_hidden = encoder(input[t], torch.zeros(hidden_sizes))
+
+        # Need to index this
+        encoder_outputs[t] = encoder_out()
 
 def main():
-    pass
-    
+    encoder = Encoder()
+    decoder = Decoder()
+
+    encoder_optimizer = optim.Adam(encoder.parameters(), lr=1e-3)
+    decoder_optimizer = optim.Adam(decoder.parameters(), lr=1e-3)
+
+    loss_function = None
+
+    train(input, target, encoder, decoder, encoder_optimizer, decoder_optimizer, loss_function)
+
+
 if __name__ == "__main__":
     main()
