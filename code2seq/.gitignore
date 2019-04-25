@@ -3,4 +3,4 @@
 .idea/*
 *.iml
 *.xml
-!data/data.py
+!data\data.py
