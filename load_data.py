@@ -35,13 +35,19 @@ train_val_fields = [
 #     ('SentimentText', TEXT) # process it as text
 # ]
 
-trainds, valds, testds = data.TabularDataset.splits(path='./data', 
-                                                    format='tsv', 
-                                                    train='data_ps.descriptions.train.tsv', 
-                                                    validation='data_ps.descriptions.valid.tsv',
-                                                    test='data_ps.descriptions.test.tsv',
-                                                    fields=train_val_fields, 
-                                                    skip_header=True)
+# trainds, valds, testds = data.TabularDataset.splits(path='./data', 
+#                                                     format='tsv', 
+#                                                     train='data_ps.descriptions.train.tsv', 
+#                                                     validation='data_ps.descriptions.valid.tsv',
+#                                                     test='data_ps.descriptions.test.tsv',
+#                                                     fields=train_val_fields, 
+#                                                     skip_header=True)
+
+testds = data.TabularDataset.splits(path='./data', 
+                                    format='tsv', 
+                                    test='data_ps.descriptions.test.tsv', 
+                                    fields=train_val_fields, 
+                                    skip_header=True)
 
 # unlabds = data.TabularDataset(path='./data/unlabelled.tsv', 
 #                                     format='tsv', 
