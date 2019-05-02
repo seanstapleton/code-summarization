@@ -20,7 +20,7 @@ def get_and_format_examples(examples_path, labels_path):
     
     return code_limited, labels_limited
 
-def preprocess_subset(codeset, label_set, floor_number, ceil_number):
+def preprocess_subset(codeset, label_set, floor_number, ceil_number, output_path):
     messups = []
     idx = 0
     for example,label in zip(codeset, label_set):
@@ -37,12 +37,12 @@ def preprocess_subset(codeset, label_set, floor_number, ceil_number):
     return messups
 
 if __name__ == '__main__':
-    if len(sys.agv) < 3:
+    if len(sys.argv) < 3:
         print('You must include paths to your training set and labels')
         sys.exit()
     output_path = sys.argv[3] if len(sys.argv) > 3 else ''
     examples_path,labels_path = sys.argv[1],sys.argv[2]
-    dataset,labels = get_and_format_examples(examples_path, labels_path)
+    code_limited,labels_limited = get_and_format_examples(examples_path, labels_path)
 
     ### Run preprocessing in batches of 10 w/ 2,000 examples at a time
     pool = mp.Pool(processes=10)
@@ -57,4 +57,4 @@ if __name__ == '__main__':
 
     output = [r.get() for r in results]
     messups = [messup for elt in output for messup in elt]
-    print('Finished preprocessing. Examples ', +', '.join(str(m) for m in messups) + ' were not able to be processed.')
+    print('Finished preprocessing. Examples ' +', '.join(str(m) for m in messups) + ' were not able to be processed.')
